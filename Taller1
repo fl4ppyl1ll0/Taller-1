@@ -157,3 +157,33 @@ static void cargarAlumnosDesdeArchivo() {
      System.out.println("- " + alCount + " alumnos en la lista.");
      System.out.println("- " + solCount + " solicitudes de ingreso.");
  }
+static void cargarSolicitudesDesdeArchivo() {
+     File archivo = new File(archSolicitudes);
+     if (!archivo.exists()) {
+         System.out.println("No se encontro el archivo " + archSolicitudes + ".");
+         return;
+     }
+     try (Scanner lector = new Scanner(archivo)) {
+         while (lector.hasNextLine()) {
+             String linea = lector.nextLine().trim();
+             if (linea.isEmpty()) continue;
+
+             int guion = linea.indexOf('-');
+             if (guion <= 0 || guion == linea.length() - 1) {
+                 System.out.println("Linea con formato invalido en " + archSolicitudes + ", se omite: " + linea);
+                 continue;
+             }
+             if (solCount >= max) {
+                 System.out.println("Capacidad maxima de solicitudes (" + max + ") alcanzada, se ignoran las lineas restantes.");
+                 break;
+             }
+             solNombre[solCount] = linea.substring(0, guion).trim();
+             solApellido[solCount] = linea.substring(guion + 1).trim();
+             solProcesada[solCount] = false;
+             solCount++;
+         }
+         solicitudesCargadas = true;
+     } catch (IOException e) {
+         System.out.println("Error al leer " + archSolicitudes + ": " + e.getMessage());
+     }
+ }
