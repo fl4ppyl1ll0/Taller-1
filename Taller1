@@ -1,0 +1,56 @@
+//Florencia Lillo - 20.950.521-3 - ITI
+
+
+
+package Taller1;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class Taller1 {
+// aqui estan las variables generales :3
+
+	/**las siguintes dos variables son 
+	 * capacidad maxima de alumnos junto a las solicitudes leidas desde archivo y 
+	 * capacidad combinada de rechazados (archivo + inscripciones manuales)*/
+ static int max = 100;
+ static int maxRechazados = 200;
+ 
+
+ static String archAlumnos = "Alumnos.txt";
+ static String archSolicitudes = "Solicitudes.txt";
+ static  String carpetaReportes = "Reportes";
+ 
+//las listas con los datos de los alumnos de la lista oficial 
+ static String[] alNombre = new String[max];
+ static String[] alApellido = new String[max];
+ static String[] alRut = new String[max];
+ static String[] alParalelo = new String[max];
+ static int alCount = 0;
+
+//listas con los datos de solicitudes 
+ static String[] solNombre = new String[max];
+ static String[] solApellido = new String[max];
+ /** esta lista marca si la solicitud en esa posicion ya fue procesada por la opcion 2 */
+ static boolean[] solProcesada = new boolean[max]; 
+ static int solCount = 0;
+
+ 
+ //listas con los datos de miembros ingresados al grupo 
+ static String[] miNombre = new String[max];
+ static String[] miApellido = new String[max];
+ static String[] miRut = new String[max];
+ static String[] miParalelo = new String[max];
+ static int miCount = 0;
+
+ //lista con los rechazado
+ /** Cada posicion ya trae la linea formateada lista para el reporte */
+ static String[] rechDescripcion = new String[maxRechazados];
+ static int rechCount = 0;
+ 
+//estos son los estados de cargado
+ static boolean alumnosCargados = false;
+ static boolean solicitudesCargadas = false;
