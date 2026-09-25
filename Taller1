@@ -54,7 +54,8 @@ public class Taller1 {
 //estos son los estados de cargado
  static boolean alumnosCargados = false;
  static boolean solicitudesCargadas = false;
-//contadores para opcion 6 (analisis estadistico)
+ 
+ //contadores para opcion 6 (analisis estadistico)
  static int statManualIntentos = 0;   // cada intento (exitoso o no) de inscripcion manual
  static int statManualAdmitidos = 0;  // admitidos via inscripcion manual (opcion 3)
  static int statArchivoAdmitidos = 0; // admitidos via procesamiento de Solicitudes.txt (opcion 2)
@@ -80,6 +81,7 @@ public class Taller1 {
      } while (opcion != 7);
      sc.close();
  }
+
 //el menu :D
  static void mostrarMenuPrincipal() {
      System.out.println("\n===== Sistema de Control del Grupo POO =====");
@@ -108,7 +110,13 @@ public class Taller1 {
 
      cargarAlumnosDesdeArchivo();
      cargarSolicitudesDesdeArchivo();
-static void cargarAlumnosDesdeArchivo() {
+
+     System.out.println("Archivos cargados con exito!");
+     System.out.println("- " + alCount + " alumnos en la lista.");
+     System.out.println("- " + solCount + " solicitudes de ingreso.");
+ }
+
+ static void cargarAlumnosDesdeArchivo() {
      File archivo = new File(archAlumnos);
      if (!archivo.exists()) {
          System.out.println("No se encontro el archivo " + archAlumnos + ".");
@@ -153,11 +161,7 @@ static void cargarAlumnosDesdeArchivo() {
      }
  }
 
-     System.out.println("Archivos cargados con exito!");
-     System.out.println("- " + alCount + " alumnos en la lista.");
-     System.out.println("- " + solCount + " solicitudes de ingreso.");
- }
-static void cargarSolicitudesDesdeArchivo() {
+ static void cargarSolicitudesDesdeArchivo() {
      File archivo = new File(archSolicitudes);
      if (!archivo.exists()) {
          System.out.println("No se encontro el archivo " + archSolicitudes + ".");
@@ -187,6 +191,9 @@ static void cargarSolicitudesDesdeArchivo() {
          System.out.println("Error al leer " + archSolicitudes + ": " + e.getMessage());
      }
  }
+ 
+ 
+ 
  //Procesar las solicitudes
  
  /**
@@ -232,7 +239,8 @@ static void cargarSolicitudesDesdeArchivo() {
      System.out.print("\nResumen: " + admitidosNuevos + " admitidos / " + rechazadosNuevos + " rechazados");
      System.out.println(duplicados > 0 ? " / " + duplicados + " ya eran miembros." : ".");
  }
-//inscripcion manual
+ 
+ //inscripcion manual
  
  static void inscripcionManual() {
      if (!alumnosCargados) {
@@ -301,6 +309,7 @@ static void cargarSolicitudesDesdeArchivo() {
          System.out.println("No hay espacio en el grupo para admitir a esta persona.");
      }
  }
+
 //administracion del curso
  
  static void administracionCurso() {
@@ -351,7 +360,8 @@ static void cargarSolicitudesDesdeArchivo() {
          System.out.println("Paralelo actualizado! Cambios guardados en " + archAlumnos);
      }
  }
-static void eliminarAlumno() {
+
+ static void eliminarAlumno() {
      String rut = leerTexto("Ingrese RUT del alumno a eliminar: ");
      int idx = buscarAlumnoPorRut(rut);
      if (idx == -1) {
@@ -391,7 +401,9 @@ static void eliminarAlumno() {
          System.out.println("Alumno " + nombreEliminado + " eliminado del curso" + (eraMiembro ? " y removido del grupo." : "."));
      }
  }
-(alCount >= max) {
+
+ static void inscribirAlumnoNuevo() {
+     if (alCount >= max) {
          System.out.println("No hay espacio para inscribir mas alumnos (capacidad maxima: " + max + ").");
          return;
      }
@@ -438,6 +450,8 @@ static void eliminarAlumno() {
          return false;
      }
  }
+
+
 //generacion de reportes
  static void generarReportes() {
      if (!alumnosCargados) {
@@ -471,7 +485,8 @@ static void eliminarAlumno() {
      } while (archivo.exists());
      return archivo;
  }
-static void generarReporteParalelo(String paralelo) {
+
+ static void generarReporteParalelo(String paralelo) {
      File carpeta = new File(carpetaReportes);
      if (!carpeta.exists() && !carpeta.mkdirs()) {
          System.out.println("No se pudo crear la carpeta " + carpetaReportes + ".");
@@ -515,6 +530,8 @@ static void generarReporteParalelo(String paralelo) {
          System.out.println("Error al generar el reporte: " + e.getMessage());
      }
  }
+
+
 //analisis estadisticos
 
  static void analisisEstadistico() {
@@ -559,7 +576,8 @@ static void generarReporteParalelo(String paralelo) {
          System.out.println("No hay apellidos repetidos en la lista de alumnos.");
      }
  }
-/** Cuenta cuantas solicitudes "extra" hay (mismas personas repetidas en el archivo) */
+
+ /** Cuenta cuantas solicitudes "extra" hay (mismas personas repetidas en el archivo) */
  static int contarSolicitudesDuplicadas() {
      boolean[] contado = new boolean[solCount];
      int duplicados = 0;
@@ -607,6 +625,8 @@ static void generarReporteParalelo(String paralelo) {
      if (conteos[maxIdx] <= 1) return null;
      return apellidosUnicos[maxIdx] + " (" + conteos[maxIdx] + " veces)";
  }
+
+
 //funciones de busqueda
  static int buscarAlumnoPorNombre(String nombre, String apellido) {
      for (int i = 0; i < alCount; i++) {
@@ -640,7 +660,8 @@ static void generarReporteParalelo(String paralelo) {
      miRut[miCount] = rut;
      miParalelo[miCount] = paralelo;
      miCount++;
-     return true;}
+     return true;
+ }
 
  static boolean agregarRechazado(String descripcion) {
      if (rechCount >= maxRechazados) {
@@ -671,3 +692,9 @@ static void generarReporteParalelo(String paralelo) {
      }
  }
  
+ /** Lee una linea de texto y la retorna sin espacios al inicio/final. */
+ static String leerTexto(String mensaje) {
+     System.out.print(mensaje);
+     return sc.nextLine();
+ }
+}
