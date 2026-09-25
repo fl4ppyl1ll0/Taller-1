@@ -351,3 +351,43 @@ static void cargarSolicitudesDesdeArchivo() {
          System.out.println("Paralelo actualizado! Cambios guardados en " + archAlumnos);
      }
  }
+static void eliminarAlumno() {
+     String rut = leerTexto("Ingrese RUT del alumno a eliminar: ");
+     int idx = buscarAlumnoPorRut(rut);
+     if (idx == -1) {
+         System.out.println("No existe un alumno con ese RUT.");
+         return;
+     }
+     String nombreEliminado = alNombre[idx] + " " + alApellido[idx];
+     
+     // Se elimina desplazando el resto de los elementos del vector una
+     // posicion hacia la izquierda, sin dejar huecos
+     for (int i = idx; i < alCount - 1; i++) {
+         alNombre[i] = alNombre[i + 1];
+         alApellido[i] = alApellido[i + 1];
+         alRut[i] = alRut[i + 1];
+         alParalelo[i] = alParalelo[i + 1];
+     }
+     alCount--;
+
+     //si era miembro del grupo, pierde el acceso
+     boolean eraMiembro = false;
+     int idxMiembro = -1;
+     for (int i = 0; i < miCount; i++) {
+         if (miRut[i].equalsIgnoreCase(rut)) { idxMiembro = i; break; }
+     }
+     if (idxMiembro != -1) {
+         eraMiembro = true;
+         for (int i = idxMiembro; i < miCount - 1; i++) {
+             miNombre[i] = miNombre[i + 1];
+             miApellido[i] = miApellido[i + 1];
+             miRut[i] = miRut[i + 1];
+             miParalelo[i] = miParalelo[i + 1];
+         }
+         miCount--;
+     }
+
+     if (guardarAlumnos()) {
+         System.out.println("Alumno " + nombreEliminado + " eliminado del curso" + (eraMiembro ? " y removido del grupo." : "."));
+     }
+ }
