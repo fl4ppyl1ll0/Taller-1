@@ -80,3 +80,36 @@ public class Taller1 {
      } while (opcion != 7);
      sc.close();
  }
+//el menu :D
+ static void mostrarMenuPrincipal() {
+     System.out.println("\n===== Sistema de Control del Grupo POO =====");
+     System.out.println("1) Cargar archivos (Alumnos y Solicitudes)");
+     System.out.println("2) Procesar solicitudes (Filtrado automatico)");
+     System.out.println("3) Inscripcion manual al grupo");
+     System.out.println("4) Administracion del curso");
+     System.out.println("5) Generar reportes");
+     System.out.println("6) Analisis estadistico");
+     System.out.println("7) Salir");
+ }
+
+ //lectura de archivos :>
+ 
+ /**
+  * Lee "Alumnos.txt" y "Solicitudes.txt" y carga la informacion en los
+  * vectores estaticos. 
+  * Si algun archivo no existe o alguna linea viene mal formada, 
+  * se avisa por consola pero el programa jamas se cae
+  */
+ static void cargarArchivos() {
+     alCount = 0;
+     solCount = 0;
+     alumnosCargados = false;
+     solicitudesCargadas = false;
+
+     cargarAlumnosDesdeArchivo();
+     cargarSolicitudesDesdeArchivo();
+
+     System.out.println("Archivos cargados con exito!");
+     System.out.println("- " + alCount + " alumnos en la lista.");
+     System.out.println("- " + solCount + " solicitudes de ingreso.");
+ }
