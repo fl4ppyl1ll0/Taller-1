@@ -108,6 +108,50 @@ public class Taller1 {
 
      cargarAlumnosDesdeArchivo();
      cargarSolicitudesDesdeArchivo();
+static void cargarAlumnosDesdeArchivo() {
+     File archivo = new File(archAlumnos);
+     if (!archivo.exists()) {
+         System.out.println("No se encontro el archivo " + archAlumnos + ".");
+         return;
+     }
+     try (Scanner lector = new Scanner(archivo)) {
+         while (lector.hasNextLine()) {
+             String linea = lector.nextLine().trim();
+             if (linea.isEmpty()) continue;
+
+             String[] partes = linea.split(";", -1);
+             if (partes.length != 4) {
+                 System.out.println("Linea con formato invalido en " + archAlumnos + ", se omite: " + linea);
+                 continue;
+             }
+             String nombre = partes[0].trim();
+             String apellido = partes[1].trim();
+             String rut = partes[2].trim();
+             String paralelo = partes[3].trim().toUpperCase();
+
+             if (nombre.isEmpty() || apellido.isEmpty() || rut.isEmpty()) {
+                 System.out.println("Linea con campos vacios en " + archAlumnos + ", se omite: " + linea);
+                 continue;
+             }
+             if (!paralelo.equals("C1") && !paralelo.equals("C2")) {
+                 System.out.println("Paralelo invalido en " + archAlumnos + ", se omite: " + linea);
+                 continue;
+             }
+             if (alCount >= max) {
+                 System.out.println("Capacidad maxima de alumnos (" + max + ") alcanzada, se ignoran las lineas restantes.");
+                 break;
+             }
+             alNombre[alCount] = nombre;
+             alApellido[alCount] = apellido;
+             alRut[alCount] = rut;
+             alParalelo[alCount] = paralelo;
+             alCount++;
+         }
+         alumnosCargados = true;
+     } catch (IOException e) {
+         System.out.println("Error al leer " + archAlumnos + ": " + e.getMessage());
+     }
+ }
 
      System.out.println("Archivos cargados con exito!");
      System.out.println("- " + alCount + " alumnos en la lista.");
