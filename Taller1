@@ -471,3 +471,47 @@ static void eliminarAlumno() {
      } while (archivo.exists());
      return archivo;
  }
+static void generarReporteParalelo(String paralelo) {
+     File carpeta = new File(carpetaReportes);
+     if (!carpeta.exists() && !carpeta.mkdirs()) {
+         System.out.println("No se pudo crear la carpeta " + carpetaReportes + ".");
+         return;
+     }
+     File archivo = siguienteArchivoVersionado(carpeta, "Reporte" + paralelo);
+
+     try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+         bw.write("=== Miembros del grupo - Paralelo " + paralelo + " ===");
+         bw.newLine();
+         for (int i = 0; i < miCount; i++) {
+             if (miParalelo[i].equalsIgnoreCase(paralelo)) {
+                 bw.write(miNombre[i] + " " + miApellido[i] + " - " + miRut[i]);
+                 bw.newLine();
+             }
+         }
+         System.out.println("Reporte generado: " + archivo.getPath());
+     } catch (IOException e) {
+         System.out.println("Error al generar el reporte: " + e.getMessage());
+     }
+ }
+
+
+ static void generarReporteRechazados() {
+     File carpeta = new File(carpetaReportes);
+     if (!carpeta.exists() && !carpeta.mkdirs()) {
+         System.out.println("No se pudo crear la carpeta " + carpetaReportes + ".");
+         return;
+     }
+     File archivo = siguienteArchivoVersionado(carpeta, "Rechazados");
+
+     try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+         bw.write("=== Solicitudes rechazadas ===");
+         bw.newLine();
+         for (int i = 0; i < rechCount; i++) {
+             bw.write(rechDescripcion[i]);
+             bw.newLine();
+         }
+         System.out.println("Reporte generado: " + archivo);
+     } catch (IOException e) {
+         System.out.println("Error al generar el reporte: " + e.getMessage());
+     }
+ }
