@@ -54,3 +54,29 @@ public class Taller1 {
 //estos son los estados de cargado
  static boolean alumnosCargados = false;
  static boolean solicitudesCargadas = false;
+//contadores para opcion 6 (analisis estadistico)
+ static int statManualIntentos = 0;   // cada intento (exitoso o no) de inscripcion manual
+ static int statManualAdmitidos = 0;  // admitidos via inscripcion manual (opcion 3)
+ static int statArchivoAdmitidos = 0; // admitidos via procesamiento de Solicitudes.txt (opcion 2)
+ static int statRutSoloRechazos = 0;  // rechazados de los que solo se tiene el RUT
+
+ static Scanner sc = new Scanner(System.in);
+
+ public static void main(String[] args) {
+     int opcion;
+     do {
+         mostrarMenuPrincipal();
+         opcion = leerEntero("Ingrese opcion: ", 1, 7);
+         switch (opcion) {
+             case 1 -> cargarArchivos();
+             case 2 -> procesarSolicitudes();
+             case 3 -> inscripcionManual();
+             case 4 -> administracionCurso();
+             case 5 -> generarReportes();
+             case 6 -> analisisEstadistico();
+             case 7 -> System.out.println("Hasta luego!");
+             default -> System.out.println("Opcion invalida.");
+         }
+     } while (opcion != 7);
+     sc.close();
+ }
