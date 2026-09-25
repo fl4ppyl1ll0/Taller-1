@@ -640,4 +640,34 @@ static void generarReporteParalelo(String paralelo) {
      miRut[miCount] = rut;
      miParalelo[miCount] = paralelo;
      miCount++;
+     return true;}
+
+ static boolean agregarRechazado(String descripcion) {
+     if (rechCount >= maxRechazados) {
+         System.out.println("No hay espacio para registrar mas rechazados.");
+         return false;
+     }
+     rechDescripcion[rechCount] = descripcion;
+     rechCount++;
      return true;
+ }
+
+//entrada de datos
+ 
+ /** Lee un numero entero dentro de [min, max], repitiendo hasta obtener uno valido */
+ static int leerEntero(String mensaje, int min, int max) {
+     while (true) {
+         System.out.print(mensaje);
+         String linea = sc.nextLine();
+         try {
+             int valor = Integer.parseInt(linea);
+             if (valor >= min && valor <= max) {
+                 return valor;
+             }
+             System.out.println("Opcion fuera de rango (" + min + "-" + max + "). Intente nuevamente.");
+         } catch (NumberFormatException e) {
+             System.out.println("Entrada invalida, debe ingresar un numero.");
+         }
+     }
+ }
+ 
