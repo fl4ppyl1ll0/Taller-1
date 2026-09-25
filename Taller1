@@ -391,3 +391,50 @@ static void eliminarAlumno() {
          System.out.println("Alumno " + nombreEliminado + " eliminado del curso" + (eraMiembro ? " y removido del grupo." : "."));
      }
  }
+(alCount >= max) {
+         System.out.println("No hay espacio para inscribir mas alumnos (capacidad maxima: " + max + ").");
+         return;
+     }
+     String nombre = leerTexto("Ingrese nombre: ");
+     String apellido = leerTexto("Ingrese apellido: ");
+     String rut = leerTexto("Ingrese RUT: ");
+     String paralelo = leerTexto("Ingrese paralelo (C1/C2): ").toUpperCase();
+
+     if (nombre.isEmpty() || apellido.isEmpty() || rut.isEmpty()) {
+         System.out.println("Los campos no pueden quedar en blanco. Operacion cancelada.");
+         return;
+     }
+     if (!paralelo.equals("C1") && !paralelo.equals("C2")) {
+         System.out.println("Paralelo invalido. Operacion cancelada.");
+         return;
+     }
+     if (buscarAlumnoPorRut(rut) != -1) {
+         System.out.println("Ya existe un alumno inscrito con ese RUT. Operacion cancelada.");
+         return;
+     }
+
+     alNombre[alCount] = nombre;
+     alApellido[alCount] = apellido;
+     alRut[alCount] = rut;
+     alParalelo[alCount] = paralelo;
+     alCount++;
+
+     if (guardarAlumnos()) {
+         System.out.println("Alumno inscrito con exito en la lista del curso.");
+         System.out.println("Nota: aun debe ingresar al grupo mediante el link o inscripcion manual (opcion 2 o 3).");
+     }
+ }
+
+/** Reescribe "Alumnos.txt" completo a partir de los vectores en memoria. */
+ static boolean guardarAlumnos() {
+     try (BufferedWriter bw = new BufferedWriter(new FileWriter(archAlumnos))) {
+         for (int i = 0; i < alCount; i++) {
+             bw.write(alNombre[i] + ";" + alApellido[i] + ";" + alRut[i] + ";" + alParalelo[i]);
+             bw.newLine();
+         }
+         return true;
+     } catch (IOException e) {
+         System.out.println("Error al guardar " + archAlumnos + ": " + e.getMessage());
+         return false;
+     }
+ }
