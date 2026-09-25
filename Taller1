@@ -232,3 +232,72 @@ static void cargarSolicitudesDesdeArchivo() {
      System.out.print("\nResumen: " + admitidosNuevos + " admitidos / " + rechazadosNuevos + " rechazados");
      System.out.println(duplicados > 0 ? " / " + duplicados + " ya eran miembros." : ".");
  }
+//inscripcion manual
+ 
+ static void inscripcionManual() {
+     if (!alumnosCargados) {
+         System.out.println("Debe cargar los archivos (opcion 1) antes de inscribir manualmente.");
+         return;
+     }
+     System.out.println("Como desea inscribir a la persona?");
+     System.out.println("1) Por nombre completo");
+     System.out.println("2) Por RUT");
+     System.out.println("0) Cancelar");
+     int op = leerEntero("Ingrese opcion: ", 0, 2);
+     if (op == 0) return;
+
+     statManualIntentos++;
+     if (op == 1) {
+         inscribirManualPorNombre();
+     } else {
+         inscribirManualPorRut();
+     }
+ }
+
+ static void inscribirManualPorNombre() {
+     String nombre = leerTexto("Ingrese nombre: ");
+     String apellido = leerTexto("Ingrese apellido: ");
+     if (nombre.isEmpty() || apellido.isEmpty()) {
+         System.out.println("Nombre y apellido no pueden estar vacios. Operacion cancelada.");
+         return;
+     }
+     int idx = buscarAlumnoPorNombre(nombre, apellido);
+     if (idx == -1) {
+         agregarRechazado(nombre + " " + apellido + " - No pertenece a ningun paralelo del curso");
+         System.out.println("La persona " + nombre + " " + apellido + " no pertenece a ningun paralelo del curso.");
+         System.out.println("Se registro en los rechazados.");
+         return;
+     }
+     admitirPorInscripcionManual(idx);
+ }
+
+ static void inscribirManualPorRut() {
+     String rut = leerTexto("Ingrese RUT: ");
+     if (rut.isEmpty()) {
+         System.out.println("El RUT no puede estar vacio. Operacion cancelada.");
+         return;
+     }
+     int idx = buscarAlumnoPorRut(rut);
+     if (idx == -1) {
+         agregarRechazado("Sin nombre registrado, RUT: " + rut);
+         statRutSoloRechazos++;
+         System.out.println("El RUT " + rut + " no pertenece a ningun paralelo del curso.");
+         System.out.println("No tenemos su nombre, por lo que se registrara solo el RUT en los rechazados.");
+         return;
+     }
+     admitirPorInscripcionManual(idx);
+ }
+ 
+ /** Admite (si corresponde) al alumno en la posicion idx del vector de alumnos */
+ static void admitirPorInscripcionManual(int idx) {
+     if (esMiembro(alRut[idx])) {
+         System.out.println(alNombre[idx] + " " + alApellido[idx] + " ya es miembro del grupo.");
+         return;
+     }
+     if (agregarMiembro(alNombre[idx], alApellido[idx], alRut[idx], alParalelo[idx])) {
+         statManualAdmitidos++;
+         System.out.println(alNombre[idx] + " " + alApellido[idx] + " fue admitido en " + alParalelo[idx] + " (inscripcion manual).");
+     } else {
+         System.out.println("No hay espacio en el grupo para admitir a esta persona.");
+     }
+ }
