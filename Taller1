@@ -301,3 +301,53 @@ static void cargarSolicitudesDesdeArchivo() {
          System.out.println("No hay espacio en el grupo para admitir a esta persona.");
      }
  }
+//administracion del curso
+ 
+ static void administracionCurso() {
+     if (!alumnosCargados) {
+         System.out.println("Debe cargar los archivos (opcion 1) antes de administrar el curso.");
+         return;
+     }
+     int op;
+     do {
+         System.out.println("\n--- Administracion del curso ---");
+         System.out.println("1) Cambiar paralelo de un alumno");
+         System.out.println("2) Eliminar alumno del curso");
+         System.out.println("3) Inscribir alumno nuevo");
+         System.out.println("4) Volver");
+         op = leerEntero("Ingrese opcion: ", 1, 4);
+         switch (op) {
+             case 1 -> cambiarParalelo();
+             case 2 -> eliminarAlumno();
+             case 3 -> inscribirAlumnoNuevo();
+             case 4 -> System.out.println("Volviendo al menu principal...");
+         }
+     } while (op != 4);
+ }
+
+ static void cambiarParalelo() {
+     String rut = leerTexto("Ingrese RUT del alumno: ");
+     int idx = buscarAlumnoPorRut(rut);
+     if (idx == -1) {
+         System.out.println("No existe un alumno con ese RUT.");
+         return;
+     }
+     System.out.println("Alumno: " + alNombre[idx] + " " + alApellido[idx] + " (actualmente en " + alParalelo[idx] + ")");
+     String nuevo = leerTexto("Nuevo paralelo (C1/C2): ").toUpperCase();
+     if (!nuevo.equals("C1") && !nuevo.equals("C2")) {
+         System.out.println("Paralelo invalido. Operacion cancelada.");
+         return;
+     }
+     alParalelo[idx] = nuevo;
+     
+     // Regla de coherencia: si ya era miembro del grupo, se reclasifica
+     for (int i = 0; i < miCount; i++) {
+         if (miRut[i].equalsIgnoreCase(alRut[idx])) {
+             miParalelo[i] = nuevo;
+         }
+     }
+
+     if (guardarAlumnos()) {
+         System.out.println("Paralelo actualizado! Cambios guardados en " + archAlumnos);
+     }
+ }
