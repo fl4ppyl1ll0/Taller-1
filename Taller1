@@ -438,3 +438,36 @@ static void eliminarAlumno() {
          return false;
      }
  }
+//generacion de reportes
+ static void generarReportes() {
+     if (!alumnosCargados) {
+         System.out.println("Debe cargar los archivos (opcion 1) antes de generar reportes.");
+         return;
+     }
+     int op;
+     do {
+         System.out.println("\n--- Generar reportes ---");
+         System.out.println("1) Reporte paralelo C1");
+         System.out.println("2) Reporte paralelo C2");
+         System.out.println("3) Reporte de rechazados");
+         System.out.println("4) Volver");
+         op = leerEntero("Ingrese opcion: ", 1, 4);
+         switch (op) {
+             case 1 -> generarReporteParalelo("C1");
+             case 2 -> generarReporteParalelo("C2");
+             case 3 -> generarReporteRechazados();
+             case 4 -> System.out.println("Volviendo al menu principal...");
+         }
+     } while (op != 4);
+ }
+ 
+ /** Calcula el siguiente numero de version libre para un prefijo de archivo dado */
+ static File siguienteArchivoVersionado(File carpeta, String prefijo) {
+     int version = 1;
+     File archivo;
+     do {
+         archivo = new File(carpeta, prefijo + "-V" + version + ".txt");
+         version++;
+     } while (archivo.exists());
+     return archivo;
+ }
