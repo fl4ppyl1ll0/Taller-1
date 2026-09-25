@@ -515,3 +515,47 @@ static void generarReporteParalelo(String paralelo) {
          System.out.println("Error al generar el reporte: " + e.getMessage());
      }
  }
+//analisis estadisticos
+
+ static void analisisEstadistico() {
+     int totalIntentos = solCount + statManualIntentos;
+     System.out.println("\n--- Analisis estadistico ---");
+     System.out.println("Total de intentos de ingreso: " + totalIntentos);
+
+     if (totalIntentos == 0) {
+         System.out.println("No hay datos suficientes para calcular estadisticas. Cargue y procese datos primero.");
+         return;
+     }
+
+     double pctRechazo = (rechCount * 100.0) / totalIntentos;
+     System.out.printf("Rechazados: %d (%.1f%%)%n", rechCount, pctRechazo);
+
+     int c1Miembros = 0, c2Miembros = 0;
+     for (int i = 0; i < miCount; i++) {
+         if (miParalelo[i].equalsIgnoreCase("C1")) c1Miembros++; else c2Miembros++;
+     }
+     System.out.println("Admitidos por paralelo -> C1: " + c1Miembros + " | C2: " + c2Miembros);
+
+     double tasaAdmision = (miCount * 100.0) / totalIntentos;
+     System.out.printf("Tasa de admision: %.1f%%%n", tasaAdmision);
+
+     int alC1 = 0, alC2 = 0;
+     for (int i = 0; i < alCount; i++) {
+         if (alParalelo[i].equalsIgnoreCase("C1")) alC1++; else alC2++;
+     }
+     String paraleloMayor = (alC1 == alC2) ? "Empate" : (alC1 > alC2 ? "C1" : "C2");
+     System.out.println("Alumnos inscritos en el curso -> C1: " + alC1 + " | C2: " + alC2 + " (paralelo con mas alumnos: " + paraleloMayor + ")");
+
+     System.out.println("Rechazados de los que solo se tiene el RUT: " + statRutSoloRechazos);
+     System.out.println("Inscripciones admitidas por archivo: " + statArchivoAdmitidos + " | por inscripcion manual: " + statManualAdmitidos);
+
+     int duplicadas = contarSolicitudesDuplicadas();
+     System.out.println("Solicitudes duplicadas detectadas en el archivo: " + duplicadas);
+
+     String apellidoTop = apellidoMasRepetido();
+     if (apellidoTop != null) {
+         System.out.println("Apellido mas repetido en la lista de alumnos: " + apellidoTop);
+     } else {
+         System.out.println("No hay apellidos repetidos en la lista de alumnos.");
+     }
+ }
