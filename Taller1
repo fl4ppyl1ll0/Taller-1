@@ -559,3 +559,51 @@ static void generarReporteParalelo(String paralelo) {
          System.out.println("No hay apellidos repetidos en la lista de alumnos.");
      }
  }
+/** Cuenta cuantas solicitudes "extra" hay (mismas personas repetidas en el archivo) */
+ static int contarSolicitudesDuplicadas() {
+     boolean[] contado = new boolean[solCount];
+     int duplicados = 0;
+     for (int i = 0; i < solCount; i++) {
+         if (contado[i]) continue;
+         int repeticiones = 0;
+         for (int j = i; j < solCount; j++) {
+             if (!contado[j] && solNombre[i].equalsIgnoreCase(solNombre[j]) && solApellido[i].equalsIgnoreCase(solApellido[j])) {
+                 contado[j] = true;
+                 repeticiones++;
+             }
+         }
+         if (repeticiones > 1) {
+             duplicados += (repeticiones - 1);
+         }
+     }
+     return duplicados;
+ }
+ /** Devuelve el apellido mas repetido en la lista de alumnos, o null si no hay repetidos */
+ static String apellidoMasRepetido() {
+     if (alCount == 0) return null;
+     String[] apellidosUnicos = new String[max];
+     int[] conteos = new int[max];
+     int totalUnicos = 0;
+
+     for (int i = 0; i < alCount; i++) {
+         String apellido = alApellido[i];
+         int idx = -1;
+         for (int j = 0; j < totalUnicos; j++) {
+             if (apellidosUnicos[j].equalsIgnoreCase(apellido)) { idx = j; break; }
+         }
+         if (idx == -1) {
+             apellidosUnicos[totalUnicos] = apellido;
+             conteos[totalUnicos] = 1;
+             totalUnicos++;
+         } else {
+             conteos[idx]++;
+         }
+     }
+
+     int maxIdx = 0;
+     for (int j = 1; j < totalUnicos; j++) {
+         if (conteos[j] > conteos[maxIdx]) maxIdx = j;
+     }
+     if (conteos[maxIdx] <= 1) return null;
+     return apellidosUnicos[maxIdx] + " (" + conteos[maxIdx] + " veces)";
+ }
