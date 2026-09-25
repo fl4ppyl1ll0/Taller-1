@@ -607,3 +607,37 @@ static void generarReporteParalelo(String paralelo) {
      if (conteos[maxIdx] <= 1) return null;
      return apellidosUnicos[maxIdx] + " (" + conteos[maxIdx] + " veces)";
  }
+//funciones de busqueda
+ static int buscarAlumnoPorNombre(String nombre, String apellido) {
+     for (int i = 0; i < alCount; i++) {
+         if (alNombre[i].equalsIgnoreCase(nombre) && alApellido[i].equalsIgnoreCase(apellido)) {
+             return i;
+         }
+     }
+     return -1;
+ }
+
+ static int buscarAlumnoPorRut(String rut) {
+     for (int i = 0; i < alCount; i++) {
+         if (alRut[i].equalsIgnoreCase(rut)) {
+             return i;
+         }
+     }
+     return -1;
+ }
+
+ static boolean esMiembro(String rut) {
+     for (int i = 0; i < miCount; i++) {
+         if (miRut[i].equalsIgnoreCase(rut)) return true;
+     }
+     return false;
+ }
+
+ static boolean agregarMiembro(String nombre, String apellido, String rut, String paralelo) {
+     if (miCount >= max) return false;
+     miNombre[miCount] = nombre;
+     miApellido[miCount] = apellido;
+     miRut[miCount] = rut;
+     miParalelo[miCount] = paralelo;
+     miCount++;
+     return true;
